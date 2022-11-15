@@ -21,10 +21,18 @@ def print_sudoku_puzzle(sudoku_puzzle):
       if column_number != 8 and value != 0:
         print(str(value) + " ", end="")
       elif column_number != 8 and value == 0:
-        print("  ", end="")
+        print(" ", end=" ")
       elif column_number == 8 and value != 0:
         print(str(value))
       else:
         print(" ")
 
+def find_first_empty_space(sudoku_puzzle):
+  for row_number, row in enumerate(sudoku_puzzle):
+    for column_number, value in enumerate(row):
+      if value == 0:
+        return (row_number, column_number)
+  return -1
+
 print_sudoku_puzzle(sudoku_puzzle)
+print(find_first_empty_space(sudoku_puzzle))
