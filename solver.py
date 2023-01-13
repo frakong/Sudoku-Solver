@@ -34,5 +34,7 @@ def find_first_empty_space(sudoku_puzzle):
         return (row_number, column_number)
   return -1
 
+def is_puzzle_valid(sudoku_puzzle, current_number, current_position):
+  return True
 print_sudoku_puzzle(sudoku_puzzle)
 print(find_first_empty_space(sudoku_puzzle))
