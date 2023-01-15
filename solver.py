@@ -34,7 +34,32 @@ def find_first_empty_space(sudoku_puzzle):
         return (row_number, column_number)
   return -1
 
-def is_puzzle_valid(sudoku_puzzle, current_number, current_position):
+def is_valid_in_row(sudoku_puzzle, current_number, current_position):
+  for column in range(len(sudoku_puzzle[0])):
+    if sudoku_puzzle[current_position[0]][column] == current_number and column != current_position[1]:
+      return False
   return True
+
+def is_valid_in_column(sudoku_puzzle, current_number, current_position):
+  for row in range(len(sudoku_puzzle)):
+    if sudoku_puzzle[row][current_position[1]] == current_number and row != current_position[0]:
+      return False
+  return True
+
+def is_valid_in_box(sudoku_puzzle, current_number, current_position):
+  current_box_row = current_position[0] // 3
+  current_box_column = current_position[1] // 3
+  for row_in_box in range(current_box_row*3, current_box_row*3+3):
+    for column_in_box in range(current_box_column*3, current_box_column*3+3):
+      if (sudoku_puzzle[row_in_box][column_in_box] == current_number and (row_in_box, column_in_box) != current_position):
+        return False
+  return True
+
+def is_puzzle_valid(sudoku_puzzle, current_number, current_position):
+  # Current position should be a tuple (row, col)
+  if (is_valid_in_row(sudoku_puzzle, current_number, current_position) and is_valid_in_column(sudoku_puzzle, current_number, current_position) and is_valid_in_box(sudoku_puzzle, current_number, current_position)):
+    return True
+  return False 
+
 print_sudoku_puzzle(sudoku_puzzle)
 print(find_first_empty_space(sudoku_puzzle))
