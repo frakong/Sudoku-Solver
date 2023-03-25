@@ -1,13 +1,13 @@
 sudoku_puzzle = [
-  [1, 0, 1, 0, 1, 0, 1, 0, 1],
-  [0, 2, 0, 2, 0, 2, 0, 2, 0],
-  [3, 0, 3, 0, 3, 0, 3, 0, 3],
-  [0, 4, 0, 4, 0, 4, 0, 4, 0],
-  [5, 0, 5, 0, 5, 0, 5, 0, 5],
-  [0, 6, 0, 6, 0, 6, 0, 6, 0],
-  [7, 0, 7, 0, 7, 0, 7, 0, 7],
-  [0, 8, 0, 8, 0, 8, 0, 8, 0],
-  [9, 0, 9, 0, 9, 0, 9, 0, 9]
+  [9, 0, 3, 5, 6, 0, 4, 0, 0],
+  [0, 0, 0, 0, 0, 1, 0, 6, 0],
+  [0, 5, 0, 0, 0, 2, 0, 0, 0],
+  [4, 0, 0, 0, 0, 0, 0, 0, 7],
+  [0, 9, 0, 3, 8, 0, 0, 2, 0],
+  [0, 0, 0, 0, 0, 5, 0, 0, 0],
+  [0, 0, 8, 0, 0, 0, 2, 0, 0],
+  [0, 0, 0, 0, 1, 0, 0, 0, 0],
+  [0, 3, 0, 6, 9, 0, 0, 8, 0]
 ]
 
 def print_sudoku_puzzle(sudoku_puzzle):
@@ -61,5 +61,30 @@ def is_puzzle_valid(sudoku_puzzle, current_number, current_position):
     return True
   return False 
 
-print_sudoku_puzzle(sudoku_puzzle)
-print(find_first_empty_space(sudoku_puzzle))
+def solve_puzzle(sudoku_puzzle):
+  # Takes a sudoku puzzle and solves it through backtracking. Assumes that every number already in the puzzle is valid.
+  first_empty_space = find_first_empty_space(sudoku_puzzle)
+  if (first_empty_space == -1):
+    #No empty spaces, so puzzle is solved.
+    return True
+  else:
+    empty_space_row, empty_space_col = first_empty_space
+  
+  #Now, try plugging each possible number (1-9) into the empty space and see if it's valid.
+  for test_number in range(1,10):
+    if (is_puzzle_valid(sudoku_puzzle, test_number, (empty_space_row, empty_space_col))):
+      #Add the test number to the empty space and try to solve the updated board.
+      sudoku_puzzle[empty_space_row][empty_space_col] = test_number;
+      if (solve_puzzle(sudoku_puzzle)):
+        return True
+      #If you can't solve the updated board, the test number is invalid, reset empty space to 0.
+      sudoku_puzzle[empty_space_row][empty_space_col] = 0
+  return False
+
+def solve_sudoku_puzzle(sudoku_puzzle):
+  #Solves the sudoku puzzle and prints the puzzle before and after it is solved.
+  print_sudoku_puzzle(sudoku_puzzle)
+  solve_puzzle(sudoku_puzzle)
+  print_sudoku_puzzle(sudoku_puzzle)
+
+solve_sudoku_puzzle(sudoku_puzzle)
